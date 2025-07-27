@@ -8,12 +8,6 @@ from app.core.security import security
 router = APIRouter()
 
 
-# class Security:
-#     def get_password_hash(self, password: str) -> str:
-#         return password + "_hashed"
-    
-
-# security = Security()
 
 @router.post('/', response_model=UserSchema, status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):

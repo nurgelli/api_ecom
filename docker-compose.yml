@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  api_ecom_db:
+    image: postgres:16.9-bookworm
+    container_name: api_ecom_db
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "5434:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+
+
+name: api_ecom_db
+
+
+volumes:
+  db_data:
+
+
+
+
