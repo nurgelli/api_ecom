@@ -11,25 +11,33 @@ from app.core.config import settings
 from app.models.user import User as DBUser
 from app.schemas.token import TokenPayload
 
-reusable_aouth2 = OAuth2PasswordBearer(
-    tokenUrl=f'{settings.API_V1_STR}/login/access-token'
+reusable_oauth2 = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/login/access-token"
 )
 
 def get_current_user(
-    db: Session = Depends(get_db), token: str = Depends(reusable_aouth2)
+    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
 ) -> DBUser:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         token_data = TokenPayload(**payload)
-    except JWTError:
+    except JWTError as e: # Hatayı yakalayıp detayını yazdıralım
+        print(f"ERROR: JWTError occurred during token decoding: {e}") # Ekledik
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = db.query(DBUser).filter(DBUser.id == token_data.sub).first()
+    except Exception as e: # Beklenmedik diğer hataları da yakalayalım
+        print(f"ERROR: An unexpected error occurred in get_current_user: {e}") # Ekledik
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error during authentication",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    user = db.query(DBUser).filter(DBUser.id == int(token_data.sub)).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
