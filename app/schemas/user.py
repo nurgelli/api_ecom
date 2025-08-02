@@ -11,7 +11,6 @@ class UserUpdate(UserCreate):
     password: Optional[str] = None
     
     
-
 class UserInDBBase(BaseModel):
     id: Optional[int] = None
     email: EmailStr
