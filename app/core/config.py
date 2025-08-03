@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import load_dotenv
 import os
 
-load_dotenv() # .env dosyasını yüklüyor
+load_dotenv() 
 
 
 class Settings(BaseSettings):
@@ -12,14 +12,11 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = 'FastAPI E-commerce'
     API_V1_STR: str = '/api/v1'
 
-    SECRET_KEY: str = os.getenv("SECRET_KEY") # Sınıf özelliği olarak tanımlandı
+    SECRET_KEY: str = os.getenv("SECRET_KEY") 
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 3000
 
     model_config = SettingsConfigDict(case_sensitive=True, extra='allow')
 
-settings = Settings() # Ayarlar objesi burada oluşturuluyor ve yükleniyor
+settings = Settings() 
 
-# print ifadesini buraya taşıyoruz
-# Uygulamanın kullandığı kesin SECRET_KEY değerini görmek için:
-print(f"DEBUG: Active SECRET_KEY is: {settings.SECRET_KEY}")

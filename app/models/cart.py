@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, ForeignKey, String, Float, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy import UniqueConstraint
-from app.db.base import Base
+from app.db.base_class import Base
 
 class Cart(Base):
     __tablename__ = 'carts'
