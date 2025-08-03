@@ -25,8 +25,18 @@ class OrderItem(OrderItemBase):
     product: ProductInOrder
     created_at: datetime
     updated_at: Optional[datetime] = None
-
+    
+    class Config:
+        from_attributes = True
+        
+        
 class OrderCreate(BaseModel):
+    pass
+
+class OrderUpdate(BaseModel):
+    status: Optional[OrderStatus] = None        
+
+class OrderBase(BaseModel):
     pass
 
 
